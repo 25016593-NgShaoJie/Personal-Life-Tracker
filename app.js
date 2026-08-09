@@ -59,6 +59,11 @@ function checkAuthenticated(req, res, next) {
 
 // ROUTES
 
+// index route (landing page)
+app.get('/', (req, res) => {
+    res.render('index');
+});
+
 // register routes
 app.get('/register', (req, res) => {
     res.render('register');
