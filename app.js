@@ -121,5 +121,5 @@ app.post('/meals/:id/delete', checkAuthenticated, (req, res) => {
 });
 
 // connect to the server
-const PORT = process.env.PORT || 3000; // port from .env or default to 3000
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`)); // start server
+const PORT = process.env.PORT || 4000; // port from .env or default to 4000
+app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`)); // start server
