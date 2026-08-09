@@ -1,0 +1,91 @@
+<%- include('partials/head') %>
+<%- include('partials/navbar') %>
+<%- include('partials/flash') %>
+
+<div class="page-container">
+    <h1>Meals</h1>
+    <p class="section-subtitle" style="text-align: left; margin-bottom: 30px;">Log what you eat and track how it makes you feel.</p>
+
+    <div class="form-container" style="margin: 0 0 40px 0; max-width: 100%;">
+        <h2>Add a meal</h2>
+
+        <form action="/meals" method="POST" enctype="multipart/form-data">
+            <div class="form-group">
+                <label for="name">Meal name</label>
+                <input type="text" id="name" name="name" placeholder="e.g. Chicken rice" required>
+            </div>
+
+            <div class="form-group">
+                <label for="meal_type">Meal type</label>
+                <select id="meal_type" name="meal_type" required>
+                    <option value="">Select type</option>
+                    <option value="breakfast">Breakfast</option>
+                    <option value="lunch">Lunch</option>
+                    <option value="dinner">Dinner</option>
+                    <option value="snack">Snack</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="meal_time">Date & time</label>
+                <input type="datetime-local" id="meal_time" name="meal_time" required>
+            </div>
+
+            <div class="form-group">
+                <label for="rating">Rating (1–5, optional)</label>
+                <input type="number" id="rating" name="rating" min="1" max="5">
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Notes (optional)</label>
+                <textarea id="notes" name="notes" rows="2" placeholder="Any notes..."></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="photo">Photo (optional)</label>
+                <div class="file-upload">
+                    <label for="photo" class="file-upload-btn">📷 Choose photo</label>
+                    <input type="file" id="photo" name="photo" accept="image/*" onchange="updateFileName(this)">
+                    <span id="file-name" class="file-name">No file chosen</span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn">Add meal</button>
+        </form>
+    </div>
+
+    <div class="entry-list">
+        <% if (meals.length === 0) { %>
+            <p style="color: #777;">No meals logged yet. Add your first one above.</p>
+        <% } else { %>
+            <% meals.forEach(function(meal) { %>
+                <div class="entry-card">
+                    <% if (meal.photo_path) { %>
+                        <img src="<%= meal.photo_path %>" alt="<%= meal.name %>" style="width:70px; height:70px; object-fit:cover; border-radius:10px; margin-right:16px;">
+                    <% } %>
+                    <div class="entry-details">
+                        <h3><%= meal.name %> <span style="color:#999; font-weight: 400;">(<%= meal.meal_type %>)</span></h3>
+                        <p><%= new Date(meal.meal_time).toLocaleString() %><% if (meal.rating) { %> · Rating: <%= meal.rating %>/5<% } %></p>
+                        <% if (meal.notes) { %><p><%= meal.notes %></p><% } %>
+                    </div>
+                    <form action="/meals/<%= meal.id %>/delete" method="POST">
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </div>
+            <% }); %>
+        <% } %>
+    </div>
+</div>
+
+<script>
+function updateFileName(input) {
+    const fileNameSpan = document.getElementById('file-name');
+    if (input.files && input.files.length > 0) {
+        fileNameSpan.textContent = input.files[0].name;
+    } else {
+        fileNameSpan.textContent = 'No file chosen';
+    }
+}
+</script>
+
+<%- include('partials/footer') %>

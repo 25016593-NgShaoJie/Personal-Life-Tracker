@@ -339,3 +339,68 @@ a {
 .btn-light:hover {
     background-color: #f5f5f5;
 }
+
+/* ---------- Dashboard ---------- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    text-align: center;
+}
+
+.stat-card h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #111;
+    margin: 10px 0 4px 0;
+}
+
+.stat-card p {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 16px;
+}
+
+/* ---------- File upload ---------- */
+.file-upload {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.file-upload input[type="file"] {
+    display: none;
+}
+
+.file-upload-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #f0edfe;
+    color: #6c5ce7;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+}
+
+.file-upload-btn:hover {
+    background-color: #e5e0fd;
+}
+
+.file-name {
+    font-size: 0.85rem;
+    color: #777;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

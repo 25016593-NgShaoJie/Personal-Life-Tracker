@@ -6,8 +6,34 @@ const mysql = require('mysql2'); // import mysql2
 const session = require('express-session'); // import express-session
 const flash = require('connect-flash'); // import connect-flash
 const bcrypt = require('bcrypt'); // import bcrypt for password hashing
+const multer = require('multer'); // import multer for file uploads
+const path = require('path'); // import path for file paths
 
 const app = express(); // create an express app
+
+// setting up multer
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, 'public/uploads/meals');
+    },
+    filename: (req, file, cb) => {
+        const uniqueName = Date.now() + '-' + Math.round(Math.random() * 1e9) + path.extname(file.originalname);
+        cb(null, uniqueName);
+    }
+});
+
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = ['image/jpeg', 'image/png', 'image/webp'];
+        if (allowedTypes.includes(file.mimetype)) {
+            cb(null, true);
+        } else {
+            cb(new Error('Only JPG, PNG, and WEBP images are allowed.'));
+        }
+    }
+});
 
 // create connection to db
 const db = mysql.createConnection({
@@ -148,26 +174,82 @@ app.get('/logout', (req, res) => {
 
 // dashboard route 
 app.get('/dashboard', checkAuthenticated, (req, res) => {
-    res.render('dashboard', { user: req.session.user });
+    const userId = req.session.user.id;
+
+    const mealsSql = 'SELECT COUNT(*) AS count FROM meals WHERE user_id = ? AND DATE(meal_time) = CURDATE()';
+    const exerciseSql = 'SELECT COUNT(*) AS count FROM exercise WHERE user_id = ? AND DATE(logged_at) = CURDATE()';
+    const sleepSql = 'SELECT COUNT(*) AS count FROM sleep WHERE user_id = ? AND DATE(bedtime) = CURDATE()';
+    const activitiesSql = 'SELECT COUNT(*) AS count FROM activities WHERE user_id = ? AND DATE(logged_at) = CURDATE()';
+
+    db.query(mealsSql, [userId], (err, mealsResult) => {
+        if (err) throw err;
+
+        db.query(exerciseSql, [userId], (err, exerciseResult) => {
+            if (err) throw err;
+
+            db.query(sleepSql, [userId], (err, sleepResult) => {
+                if (err) throw err;
+
+                db.query(activitiesSql, [userId], (err, activitiesResult) => {
+                    if (err) throw err;
+
+                    res.render('dashboard', {
+                        mealsCount: mealsResult[0].count,
+                        exerciseCount: exerciseResult[0].count,
+                        sleepCount: sleepResult[0].count,
+                        activitiesCount: activitiesResult[0].count
+                    });
+                });
+            });
+        });
+    });
 });
 
 // meals routes
 app.get('/meals', checkAuthenticated, (req, res) => {
-    // to be completed:
-    // viewing meals for the logged-in user
-    // render page
+    const userId = req.session.user.id;
+
+    const sql = 'SELECT * FROM meals WHERE user_id = ? ORDER BY meal_time DESC';
+    db.query(sql, [userId], (err, results) => {
+        if (err) throw err;
+
+        res.render('meals', { meals: results });
+    });
 });
 
-app.post('/meals', checkAuthenticated, (req, res) => {
-    // to be completed:
-    // insert a new meal for the logged-in user
-    // redirect to /meals
+//add meal
+app.post('/meals', checkAuthenticated, upload.single('photo'), (req, res) => {
+    const userId = req.session.user.id;
+    const { name, meal_type, meal_time, rating, notes } = req.body;
+
+    if (!name || !meal_type || !meal_time) {
+        req.flash('error', 'Name, meal type, and time are required.');
+        return res.redirect('/meals');
+    }
+
+    const photoPath = req.file ? '/uploads/meals/' + req.file.filename : null;
+
+    const sql = 'INSERT INTO meals (user_id, name, meal_type, meal_time, rating, notes, photo_path) VALUES (?, ?, ?, ?, ?, ?, ?)';
+    db.query(sql, [userId, name, meal_type, meal_time, rating || null, notes || null, photoPath], (err) => {
+        if (err) throw err;
+
+        req.flash('success', 'Meal logged!');
+        res.redirect('/meals');
+    });
 });
 
+// delete meal 
 app.post('/meals/:id/delete', checkAuthenticated, (req, res) => {
-    // to be completed:
-    // delete a meal by id for the logged-in user
-    // redirect to /meals
+    const userId = req.session.user.id;
+    const mealId = req.params.id;
+
+    const sql = 'DELETE FROM meals WHERE id = ? AND user_id = ?';
+    db.query(sql, [mealId, userId], (err) => {
+        if (err) throw err;
+
+        req.flash('success', 'Meal deleted.');
+        res.redirect('/meals');
+    });
 });
 
 // connect to the server
