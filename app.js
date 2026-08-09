@@ -71,10 +71,35 @@ app.get('/register', (req, res) => {
 
 app.post('/register', (req, res) => {
     const { username, email, password } = req.body;
-    // to be completed:
-    // hash password 
-    // check for duplicate email
-    // insert into users table
+
+    if (!username || !email || !password) {
+        req.flash('error', 'All fields are required.');
+        return res.redirect('/register');
+    }
+
+    // check if the email is already taken
+    const checkSql = 'SELECT id FROM users WHERE email = ?';
+    db.query(checkSql, [email], (err, results) => {
+        if (err) throw err;
+
+        if (results.length > 0) {
+            req.flash('error', 'An account with that email already exists.');
+            return res.redirect('/register');
+        }
+
+        // hash the password before saving it
+        bcrypt.hash(password, 10, (err, hashedPassword) => {
+            if (err) throw err;
+
+            const insertSql = 'INSERT INTO users (username, email, password) VALUES (?, ?, ?)';
+            db.query(insertSql, [username, email, hashedPassword], (err) => {
+                if (err) throw err;
+
+                req.flash('success', 'Registration successful! Please log in.');
+                res.redirect('/login');
+            });
+        });
+    });
 });
 
 // login routes
@@ -84,11 +109,36 @@ app.get('/login', (req, res) => {
 
 app.post('/login', (req, res) => {
     const { email, password } = req.body;
-    // to be completed:
-    // look up user by email
-    // compare hashed password
-    // set req.session.user
-    // redirect to /dashboard
+
+    if (!email || !password) {
+        req.flash('error', 'All fields are required.');
+        return res.redirect('/login');
+    }
+
+    const sql = 'SELECT * FROM users WHERE email = ?';
+    db.query(sql, [email], (err, results) => {
+        if (err) throw err;
+
+        if (results.length === 0) {
+            req.flash('error', 'Invalid email or password.');
+            return res.redirect('/login');
+        }
+
+        const user = results[0];
+
+        bcrypt.compare(password, user.password, (err, match) => {
+            if (err) throw err;
+
+            if (match) {
+                req.session.user = user;
+                req.flash('success', 'Login successful!');
+                res.redirect('/dashboard');
+            } else {
+                req.flash('error', 'Invalid email or password.');
+                res.redirect('/login');
+            }
+        });
+    });
 });
 
 // logout route
