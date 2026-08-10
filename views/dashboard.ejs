@@ -1,0 +1,40 @@
+<%- include('partials/head') %>
+<%- include('partials/navbar') %>
+<%- include('partials/flash') %>
+
+<div class="page-container">
+    <h1>Welcome back, <%= user.username %> 👋</h1>
+    <p class="section-subtitle" style="text-align: left; margin-bottom: 40px;">Here's what you've logged today.</p>
+
+    <div class="dashboard-grid">
+        <div class="stat-card">
+            <div class="feature-icon">🍽️</div>
+            <h3><%= mealsCount %></h3>
+            <p>Meals logged today</p>
+            <a href="/meals" class="btn btn-secondary">View meals</a>
+        </div>
+
+        <div class="stat-card">
+            <div class="feature-icon">🏃</div>
+            <h3><%= exerciseCount %></h3>
+            <p>Workouts logged today</p>
+            <a href="/exercise" class="btn btn-secondary">View exercise</a>
+        </div>
+
+        <div class="stat-card">
+            <div class="feature-icon">🌙</div>
+            <h3><%= sleepCount %></h3>
+            <p>Sleep entries today</p>
+            <a href="/sleep" class="btn btn-secondary">View sleep</a>
+        </div>
+
+        <div class="stat-card">
+            <div class="feature-icon">✅</div>
+            <h3><%= activitiesCount %></h3>
+            <p>Activities logged today</p>
+            <a href="/activities" class="btn btn-secondary">View activities</a>
+        </div>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

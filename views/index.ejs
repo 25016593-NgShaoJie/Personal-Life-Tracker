@@ -1,0 +1,53 @@
+<%- include('partials/head') %>
+<%- include('partials/navbar') %>
+<%- include('partials/flash') %>
+
+<section class="landing">
+    <span class="badge">Your data, your way</span>
+    <h1>Track your life.</h1>
+    <p>One simple place to log your meals, exercise, sleep, and daily activities — and actually see the patterns behind them.</p>
+
+    <div class="landing-buttons">
+        <a href="/register" class="btn">Get started</a>
+        <a href="/login" class="btn btn-secondary">Log in</a>
+    </div>
+</section>
+
+<section class="features">
+    <h2 class="section-title">Everything you need to track, in one place</h2>
+    <p class="section-subtitle">No spreadsheets, no juggling five different apps.</p>
+
+    <div class="feature-grid">
+        <div class="feature-card">
+            <div class="feature-icon">🍽️</div>
+            <h3>Meals</h3>
+            <p>Log what you eat and when — spot patterns in your energy and habits over time.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🏃</div>
+            <h3>Exercise</h3>
+            <p>Track workouts, duration, and intensity to stay consistent and see real progress.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">🌙</div>
+            <h3>Sleep</h3>
+            <p>Record bedtime, wake time, and quality — the foundation everything else depends on.</p>
+        </div>
+
+        <div class="feature-card">
+            <div class="feature-icon">✅</div>
+            <h3>Activities</h3>
+            <p>Capture the work and hobbies you spend your time on, so nothing goes unnoticed.</p>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <h2>Ready to start tracking?</h2>
+    <p>It takes less than a minute to create your account.</p>
+    <a href="/register" class="btn btn-light">Create your account</a>
+</section>
+
+<%- include('partials/footer') %>

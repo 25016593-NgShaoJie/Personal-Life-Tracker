@@ -1,0 +1,406 @@
+/* ---------- Reset & base ---------- */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    background-color: #fafafa;
+    color: #1a1a1a;
+    line-height: 1.6;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* ---------- Navbar ---------- */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+
+.nav-brand {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #111;
+}
+
+.nav-links a {
+    color: #444;
+    margin-left: 24px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.nav-links a:hover {
+    color: #6c5ce7;
+}
+
+/* ---------- Flash messages ---------- */
+.flash {
+    max-width: 600px;
+    margin: 15px auto;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 0.9rem;
+}
+
+.flash-success {
+    background-color: #eafaf1;
+    color: #1e8449;
+    border: 1px solid #b7e4c7;
+}
+
+.flash-error {
+    background-color: #fdecea;
+    color: #c0392b;
+    border: 1px solid #f5b7b1;
+}
+
+/* ---------- Landing / hero section ---------- */
+.landing {
+    max-width: 700px;
+    margin: 100px auto;
+    text-align: center;
+    padding: 0 20px;
+}
+
+.landing h1 {
+    font-size: 3rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 20px;
+    color: #111;
+}
+
+.landing p {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 40px;
+}
+
+.landing-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+    display: inline-block;
+    padding: 12px 28px;
+    background-color: #6c5ce7;
+    color: #fff;
+    border: none;
+    border-radius: 30px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.btn:hover {
+    background-color: #5b4bd6;
+    transform: translateY(-1px);
+}
+
+.btn-secondary {
+    background-color: #fff;
+    color: #111;
+    border: 1px solid #ddd;
+}
+
+.btn-secondary:hover {
+    background-color: #f5f5f5;
+}
+
+/* ---------- Forms (login, register, add-entry forms) ---------- */
+.form-container {
+    max-width: 420px;
+    margin: 70px auto;
+    background: #fff;
+    padding: 40px;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
+    border: 1px solid #f0f0f0;
+}
+
+.form-container h2 {
+    margin-bottom: 25px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.form-group {
+    margin-bottom: 18px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #555;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    background-color: #fafafa;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: #6c5ce7;
+    background-color: #fff;
+}
+
+.form-container .btn {
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* ---------- Entry lists (meals, exercise, sleep, activities) ---------- */
+.page-container {
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 0 20px;
+}
+
+.page-container h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 10px;
+}
+
+.entry-list {
+    margin-top: 30px;
+}
+
+.entry-card {
+    background: #fff;
+    padding: 18px 24px;
+    border-radius: 14px;
+    margin-bottom: 14px;
+    border: 1px solid #f0f0f0;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.entry-card .entry-details h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #111;
+}
+
+.entry-card .entry-details p {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.entry-card form {
+    margin-left: 10px;
+}
+
+.delete-btn {
+    background-color: #fdecea;
+    color: #c0392b;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+}
+
+.delete-btn:hover {
+    background-color: #f8d7da;
+}
+
+/* ---------- Badge ---------- */
+.badge {
+    display: inline-block;
+    background-color: #f0edfe;
+    color: #6c5ce7;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px;
+    margin-bottom: 20px;
+}
+
+/* ---------- Feature section ---------- */
+.features {
+    max-width: 1000px;
+    margin: 100px auto;
+    padding: 0 20px;
+    text-align: center;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 10px;
+}
+
+.section-subtitle {
+    color: #777;
+    font-size: 1rem;
+    margin-bottom: 50px;
+}
+
+.feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 24px;
+}
+
+.feature-card {
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 16px;
+    padding: 32px 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    text-align: left;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+}
+
+.feature-icon {
+    font-size: 2rem;
+    margin-bottom: 16px;
+}
+
+.feature-card h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #111;
+}
+
+.feature-card p {
+    font-size: 0.9rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+/* ---------- CTA section ---------- */
+.cta-section {
+    background: linear-gradient(135deg, #6c5ce7, #a29bfe);
+    color: #fff;
+    text-align: center;
+    padding: 80px 20px;
+    border-radius: 24px;
+    max-width: 1000px;
+    margin: 0 auto 100px auto;
+}
+
+.cta-section h2 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 12px;
+}
+
+.cta-section p {
+    font-size: 1rem;
+    opacity: 0.9;
+    margin-bottom: 30px;
+}
+
+.btn-light {
+    background-color: #fff;
+    color: #6c5ce7;
+}
+
+.btn-light:hover {
+    background-color: #f5f5f5;
+}
+
+/* ---------- Dashboard ---------- */
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.stat-card {
+    background: #fff;
+    border: 1px solid #f0f0f0;
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.04);
+    text-align: center;
+}
+
+.stat-card h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: #111;
+    margin: 10px 0 4px 0;
+}
+
+.stat-card p {
+    font-size: 0.85rem;
+    color: #777;
+    margin-bottom: 16px;
+}
+
+/* ---------- File upload ---------- */
+.file-upload {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.file-upload input[type="file"] {
+    display: none;
+}
+
+.file-upload-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #f0edfe;
+    color: #6c5ce7;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+}
+
+.file-upload-btn:hover {
+    background-color: #e5e0fd;
+}
+
+.file-name {
+    font-size: 0.85rem;
+    color: #777;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

@@ -1,0 +1,18 @@
+<nav class="navbar">
+    <a href="/" class="nav-brand">Personal Tracker</a>
+
+    <div class="nav-links">
+        <% if (user) { %>
+            <a href="/dashboard">Dashboard</a>
+            <a href="/meals">Meals</a>
+            <a href="/exercise">Exercise</a>
+            <a href="/sleep">Sleep</a>
+            <a href="/activities">Activities</a>
+            <a href="/profile">Profile</a>
+            <a href="/logout">Logout</a>
+        <% } else { %>
+            <a href="/login">Login</a>
+            <a href="/register">Register</a>
+        <% } %>
+    </div>
+</nav>
