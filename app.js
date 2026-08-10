@@ -297,7 +297,95 @@ app.post('/exercise/:id/delete', checkAuthenticated, (req, res) => {
     });
 });
 
+// sleep routes
+app.get('/sleep', checkAuthenticated, (req, res) => {
+    const userId = req.session.user.id;
 
+    const sql = 'SELECT * FROM sleep WHERE user_id = ? ORDER BY bedtime DESC';
+    db.query(sql, [userId], (err, results) => {
+        if (err) throw err;
+
+        res.render('sleep', { sleeps: results });
+    });
+});
+
+//add sleep
+app.post('/sleep', checkAuthenticated, (req, res) => {
+    const userId = req.session.user.id;
+    const { bedtime, wake_time, quality_rating } = req.body;
+
+    if (!bedtime || !wake_time) {
+        req.flash('error', 'Bedtime and wake time are required.');
+        return res.redirect('/sleep');
+    }
+
+    const sql = 'INSERT INTO sleep (user_id, bedtime, wake_time, quality_rating) VALUES (?, ?, ?, ?)';
+    db.query(sql, [userId, bedtime, wake_time, quality_rating || null], (err) => {
+        if (err) throw err;
+
+        req.flash('success', 'Sleep logged!');
+        res.redirect('/sleep');
+    });
+});
+
+//delete sleep
+app.post('/sleep/:id/delete', checkAuthenticated, (req, res) => {
+    const userId = req.session.user.id;
+    const sleepId = req.params.id;
+
+    const sql = 'DELETE FROM sleep WHERE id = ? AND user_id = ?';
+    db.query(sql, [sleepId, userId], (err) => {
+        if (err) throw err;
+
+        req.flash('success', 'Sleep entry deleted.');
+        res.redirect('/sleep');
+    });
+});
+
+//activities routes
+app.get('/activities', checkAuthenticated, (req, res) => {
+    const userId = req.session.user.id;
+
+    const sql = 'SELECT * FROM activities WHERE user_id = ? ORDER BY logged_at DESC';
+    db.query(sql, [userId], (err, results) => {
+        if (err) throw err;
+
+        res.render('activities', { activities: results });
+    });
+});
+
+// add activity
+app.post('/activities', checkAuthenticated, (req, res) => {
+    const userId = req.session.user.id;
+    const { title, category, duration_minutes, notes, logged_at } = req.body;
+
+    if (!title || !category || !duration_minutes || !logged_at) {
+        req.flash('error', 'Title, category, duration, and date/time are required.');
+        return res.redirect('/activities');
+    }
+
+    const sql = 'INSERT INTO activities (user_id, title, category, duration_minutes, notes, logged_at) VALUES (?, ?, ?, ?, ?, ?)';
+    db.query(sql, [userId, title, category, duration_minutes, notes || null, logged_at], (err) => {
+        if (err) throw err;
+
+        req.flash('success', 'Activity logged!');
+        res.redirect('/activities');
+    });
+});
+
+//delete activity
+app.post('/activities/:id/delete', checkAuthenticated, (req, res) => {
+    const userId = req.session.user.id;
+    const activityId = req.params.id;
+
+    const sql = 'DELETE FROM activities WHERE id = ? AND user_id = ?';
+    db.query(sql, [activityId, userId], (err) => {
+        if (err) throw err;
+
+        req.flash('success', 'Activity deleted.');
+        res.redirect('/activities');
+    });
+});
 
 // connect to the server
 const PORT = process.env.PORT || 4000; // port from .env or default to 4000
