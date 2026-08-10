@@ -252,6 +252,53 @@ app.post('/meals/:id/delete', checkAuthenticated, (req, res) => {
     });
 });
 
+// excercises routes
+app.get('/exercise', checkAuthenticated, (req, res) => {
+    const userId = req.session.user.id;
+
+    const sql = 'SELECT * FROM exercise WHERE user_id = ? ORDER BY logged_at DESC';
+    db.query(sql, [userId], (err, results) => {
+        if (err) throw err;
+
+        res.render('exercise', { exercises: results });
+    });
+});
+
+// new excercise 
+app.post('/exercise', checkAuthenticated, (req, res) => {
+    const userId = req.session.user.id;
+    const { activity_type, duration_minutes, intensity, notes, logged_at } = req.body;
+
+    if (!activity_type || !duration_minutes || !logged_at) {
+        req.flash('error', 'Activity type, duration, and date/time are required.');
+        return res.redirect('/exercise');
+    }
+
+    const sql = 'INSERT INTO exercise (user_id, activity_type, duration_minutes, intensity, notes, logged_at) VALUES (?, ?, ?, ?, ?, ?)';
+    db.query(sql, [userId, activity_type, duration_minutes, intensity, notes || null, logged_at], (err) => {
+        if (err) throw err;
+
+        req.flash('success', 'Exercise logged!');
+        res.redirect('/exercise');
+    });
+});
+
+// delete excercise
+app.post('/exercise/:id/delete', checkAuthenticated, (req, res) => {
+    const userId = req.session.user.id;
+    const exerciseId = req.params.id;
+
+    const sql = 'DELETE FROM exercise WHERE id = ? AND user_id = ?';
+    db.query(sql, [exerciseId, userId], (err) => {
+        if (err) throw err;
+
+        req.flash('success', 'Exercise entry deleted.');
+        res.redirect('/exercise');
+    });
+});
+
+
+
 // connect to the server
 const PORT = process.env.PORT || 4000; // port from .env or default to 4000
 app.listen(PORT, () => console.log(`Server running on port http://localhost:${PORT}`)); // start server

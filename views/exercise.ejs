@@ -1,0 +1,66 @@
+<%- include('partials/head') %>
+<%- include('partials/navbar') %>
+<%- include('partials/flash') %>
+
+<div class="page-container">
+    <h1>Exercise</h1>
+    <p class="section-subtitle" style="text-align: left; margin-bottom: 30px;">Track your workouts and stay consistent.</p>
+
+    <div class="form-container" style="margin: 0 0 40px 0; max-width: 100%;">
+        <h2>Add a workout</h2>
+
+        <form action="/exercise" method="POST">
+            <div class="form-group">
+                <label for="activity_type">Activity</label>
+                <input type="text" id="activity_type" name="activity_type" placeholder="e.g. Running, Gym, Yoga" required>
+            </div>
+
+            <div class="form-group">
+                <label for="duration_minutes">Duration (minutes)</label>
+                <input type="number" id="duration_minutes" name="duration_minutes" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="intensity">Intensity</label>
+                <select id="intensity" name="intensity" required>
+                    <option value="low">Low</option>
+                    <option value="medium" selected>Medium</option>
+                    <option value="high">High</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="logged_at">Date & time</label>
+                <input type="datetime-local" id="logged_at" name="logged_at" required>
+            </div>
+
+            <div class="form-group">
+                <label for="notes">Notes (optional)</label>
+                <textarea id="notes" name="notes" rows="2" placeholder="How did it feel?"></textarea>
+            </div>
+
+            <button type="submit" class="btn">Add exercise</button>
+        </form>
+    </div>
+
+    <div class="entry-list">
+        <% if (exercises.length === 0) { %>
+            <p style="color: #777;">No workouts logged yet. Add your first one above.</p>
+        <% } else { %>
+            <% exercises.forEach(function(ex) { %>
+                <div class="entry-card">
+                    <div class="entry-details">
+                        <h3><%= ex.activity_type %> <span style="color:#999; font-weight: 400;">(<%= ex.intensity %>)</span></h3>
+                        <p><%= new Date(ex.logged_at).toLocaleString() %> · <%= ex.duration_minutes %> min</p>
+                        <% if (ex.notes) { %><p><%= ex.notes %></p><% } %>
+                    </div>
+                    <form action="/exercise/<%= ex.id %>/delete" method="POST">
+                        <button type="submit" class="delete-btn">Delete</button>
+                    </form>
+                </div>
+            <% }); %>
+        <% } %>
+    </div>
+</div>
+
+<%- include('partials/footer') %>
